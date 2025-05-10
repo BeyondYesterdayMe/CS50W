@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound
+from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
@@ -41,3 +42,15 @@ def search(request):
     else:
         # 정확히 일치하는게 있으면 그 entry로 redirect
         return HttpResponseRedirect(reverse("entry", args=[query]))
+    
+def create(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        if util.get_entry(title):
+            return HttpResponseBadRequest("Already Existed Page")
+        else:
+            util.save_entry(title, content)
+            return HttpResponseRedirect(reverse("entry", args=[title]))
+    else:
+        return render(request, "encyclopedia/create.html")
