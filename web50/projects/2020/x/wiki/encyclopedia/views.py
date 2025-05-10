@@ -3,7 +3,7 @@ from django.http import HttpResponseNotFound
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+import markdown2
 from . import util
 
 
@@ -15,11 +15,11 @@ def index(request):
 def entry(request, title):
     entry = util.get_entry(title)
     if not entry:
-        return HttpResponseNotFound()
+        return HttpResponseNotFound() #HttpResponseBadRequest 가 나은가??
 
     return render(request, "encyclopedia/entry.html" , {
         "title" : title,
-        "entry" : entry 
+        "entry" : markdown2.markdown(entry) 
     })
 
 def search(request):
