@@ -54,3 +54,20 @@ def create(request):
             return HttpResponseRedirect(reverse("entry", args=[title]))
     else:
         return render(request, "encyclopedia/create.html")
+
+def edit(request):
+    if request.method == "POST":
+        title = request.POST.get("title").strip()
+        entry = request.POST.get("entry")
+        print(f"[{title}]")
+        print(f"[{entry}]")
+        if util.get_entry(title) != entry:
+            util.save_entry(title, entry)        
+        return HttpResponseRedirect(reverse("entry", args=[title]))
+    else:
+        title = request.GET.get("title")
+        return render(request, "encyclopedia/edit.html", {
+            "title" : title,
+            "entry" : util.get_entry(title).strip()
+        })
+    
