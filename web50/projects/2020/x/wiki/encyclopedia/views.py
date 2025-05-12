@@ -4,6 +4,7 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import markdown2
+import random
 from . import util
 
 
@@ -70,4 +71,10 @@ def edit(request):
             "title" : title,
             "entry" : util.get_entry(title).strip()
         })
-    
+
+def randompage(request):
+    entries = util.list_entries()
+    if not entries:
+        return HttpResponseBadRequest("Empty entries")
+    rnd = random.randint(0, len(entries)-1)
+    return HttpResponseRedirect(reverse("entry", args=[entries[rnd]]))
