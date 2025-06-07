@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Watch List{% endblock%}
+
+{% block body %}
+    {% for watch in watchlist %}
+    <div>
+        {{ watch.item.name }}
+    </div>
+    {% endfor %}
+{% endblock %}

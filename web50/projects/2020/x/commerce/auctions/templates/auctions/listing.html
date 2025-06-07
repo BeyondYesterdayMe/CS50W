@@ -1,0 +1,75 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Listing:{% endblock %}
+
+{% block body %}
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
+    <div class="mb-3 p-4">
+        <div class="mb-3">
+            <h5>Listing: {{ auction.item.name }}</h5>
+
+            <div>
+                <form action="{% url 'listing' auction.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="watch_toggle">
+                    {% if in_watchlist %}
+                        <input type="submit" class="btn btn-primary" value="Remove WatchList">
+                    {% else %}
+                        <input type="submit" class="btn btn-secondary" value="Add WatchList">
+                    {% endif %}
+                </form>
+            </div>
+                    
+            <img src="{{auction.item.img}}" class="img-fluid" alt="...">
+        </div>
+
+        <div class="mb-3">
+            <div class="mb-3">Desc : {{ auction.item.desc }}</div>
+            <div class="mb-3">Start Price : {{ auction.start_price }}</div>
+            <div class="mb-3">BidCount : {{ bid_count }}</div>            
+            <div class="mb-3">Highest Bid {{ cur_highest_bid }}</div>
+
+            <div class="mb-3">
+                {% if am_I_highest_bidder %}
+                    <div class="mb-3">{{ bid_count }} bid(s) so far. Your bid is the current bid.</div>
+                {% else %}
+                    <div class="mb-3">{{ bid_count }} bid(s) so far.</div>
+                {% endif %}
+            </div>
+
+            <!--
+            <div class="mb-3">
+                {% if auction.hightest_bid %}
+                    {% if auction.hightest_bid.user.id == request.user.id %}
+                        <div class="mb-3">{{ bid_count }} bid(s) so far. Your bid is the current bid.</div>
+                    {% else %}
+                        <div class="mb-3">{{ bid_count }} bid(s) so far.</div>
+                    {% endif %}
+                {% else %}
+                    <div class="mb-3">{{ bid_count }} bid(s) so far.</div>
+                {% endif %}
+            </div>
+            -->
+            <div class="mb-3">
+                <form action="{% url 'listing' auction.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="bid">
+                    <input class="form-control" type="number" placeholder="Bid" name="bidprice">
+                    <input type="submit" class="btn btn-primary" value="Place Bid">
+                </form>    
+            </div>
+
+            <div class="mb-3">
+                <h5>Details</h5>
+                <ul>
+                    <li>Listed by : {{request.user.username}}</li>
+                    <li>Category : No Category</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

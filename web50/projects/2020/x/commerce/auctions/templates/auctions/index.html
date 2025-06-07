@@ -2,6 +2,44 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    
+    {% for listing in listings %}
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <a href="{% url 'listing' listing.id %}">
+                        <img src="{{listing.item.img}}" class="img-fluid" alt="...">
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{listing.item.name}}</h5>
+                        <p class="card-text">Desc: {{listing.item.desc}}</p>
+                        <p class="card-text">Listed by: {{listing.owner}}</p>
+                        <p class="card-text">Start Price: {{listing.start_price}}</p>
+                        <!--
+                        <p class="card-text">Current Price: {{listing.hightest_bidder.price}}</p>
+                        -->
+                        <p class="card-text">Created: {{listing.created_date}}</p>
+                    </div>
+                </div>    
+            </div>       
+        </div>
+    {% endfor %}
+    
+    <!--
+    {% for listing in listings %}
+        <div>
+            <h2>{{listing.item.name}}</h2>
+            {% if listing.item.img %}
+                <img src="{{listing.item.img}}" width="500" height="300">
+            {% endif %}
+            <h5>Desc: {{listing.item.desc}}</h5>
+            <h5>Listed by: {{listing.owner}}</h5>
+            <h5>Start Price: {{listing.start_price}}</h5>
+            <h5>Current Price: {{listing.hightest_bidder.price}}</h5>
+            <h5>Created: {{listing.created_date}}</h5>
+        </div>
+    {% endfor %}
+    -->
 {% endblock %}
