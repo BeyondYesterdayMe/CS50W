@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Tasks</title>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const submit = document.querySelector('#submit');
+                const newTask = document.querySelector('#task');
+
+                submit.disabled = true;
+                newTask.onkeyup = () => {
+                    if(0 < newTask.value.length) {
+                        submit.disabled = false;
+                    } else{
+                        submit.disabled = true;
+                    }
+                }
+
+                document.querySelector('form').onsubmit = () => {
+                    const task = newTask.value;
+                    console.log(task)
+
+                    const li = document.createElement('li');
+                    li.innerHTML = task;
+                    console.log(li.innerHTML)
+
+                    document.querySelector('#tasks').append(li);
+                    document.querySelector('#task').value = '';
+
+                    // Stop form from submitting
+                    // 서버에 제출하지 말라는 뜻. 클라에서만 알아서 처리하겠다고 할때 return false 해주면 된다.
+                    return false;
+                };
+            });
+
+        </script>
+    </head>
+    <body>
+        <h1>Tasks</h1>
+        <ul id="tasks"></ul>
+        <form>
+            <input id="task" placeholder="New task" type="text">
+            <input id="submit" type="submit">
+        </form>
+    </body>
+</html>
